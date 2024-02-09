@@ -1,4 +1,6 @@
 #!/usr/bin/python3
+"""Pascal triangle module"""
+
 
 def pascal_triangle(n):
     """generate pascal triangle"""
@@ -8,14 +10,13 @@ def pascal_triangle(n):
     matrix = [[1]]
 
     for i in range(1, n):
-        matrix.append([])
+        row = [1]
 
-        for j in range(0, i + 1):
-            if (j == 0 or j == i):
-                matrix[i].append(1)
-            else:
-                a = matrix[i - 1][j - 1]
-                b = matrix[i - 1][j]
-                matrix[i].append(a + b)
+        for j in range(1, i):
+            a = matrix[i - 1][j - 1]
+            b = matrix[i - 1][j]
+            row.append(a + b)
+        row.append(1)
+        matrix.append(row)
 
     return matrix
