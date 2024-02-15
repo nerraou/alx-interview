@@ -12,6 +12,10 @@ def visit_box(box, boxes, visited):
 
 def canUnlockAll(boxes):
     """can unlock all boxes"""
+    if type(boxes) is not list:
+        return False
+    if (len(boxes)) == 0:
+        return False
     visited_boxes = set([0])
 
     visit_box(boxes[0], boxes, visited_boxes)
