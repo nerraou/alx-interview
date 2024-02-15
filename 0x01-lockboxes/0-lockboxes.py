@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """determines if all the boxes can be opened"""
 
+
 def visit_box(box, boxes, visited):
     """visit a box recursively"""
     for key in box:
