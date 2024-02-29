@@ -72,11 +72,9 @@ if __name__ == "__main__":
                 file_size += parsed_line["file_size"]
                 methods_stats[parsed_line["method"]] += 1
                 parsed_count += 1
+
             if parsed_count == 10:
                 print_stats(file_size, methods_stats)
-
                 parsed_count = 0
-        if parsed_count > 0:
-            print_stats(file_size, methods_stats)
     finally:
         print_stats(file_size, methods_stats)
