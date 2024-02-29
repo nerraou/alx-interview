@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """ parse log input """
 import re
-import fileinput
+import sys
 
 
 def is_valid_ip(ip):
@@ -41,7 +41,7 @@ def parse_line(line):
 def print_stats(file_size, methods_stats):
     """ print stats details """
     print("File size: {}".format(file_size))
-    for status, count in methods_stats.items():
+    for status, count in sorted(methods_stats.items()):
         if count > 0:
             print("{}: {}".format(status, count))
 
@@ -66,7 +66,7 @@ if __name__ == "__main__":
     parsed_count = 0
 
     try:
-        for line in fileinput.input():
+        for line in sys.stdin:
             parsed_line = parse_line(line)
 
             if parsed_line is not None:
