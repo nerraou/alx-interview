@@ -78,6 +78,5 @@ if __name__ == "__main__":
                 parsed_count = 0
         if parsed_count > 0:
             print_stats(file_size, methods_stats)
-    except KeyboardInterrupt:
-        if parsed_count > 0:
-            print_stats(file_size, methods_stats)
+    finally:
+        print_stats(file_size, methods_stats)
