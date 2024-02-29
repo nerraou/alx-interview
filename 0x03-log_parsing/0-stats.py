@@ -14,6 +14,7 @@ def is_valid_ip(ip):
 
 
 def parse_line(line):
+    """ parse line """
     regex = r"^((?:\d{1,3}\.){3}\d{1,3}) - \[(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d+)\] \"GET \/projects\/260 HTTP\/1\.1\" (\d{3}) (\d+)$"  # nopep8
     result = re.search(regex, line)
 
@@ -72,10 +73,7 @@ if __name__ == "__main__":
                 methods_stats[parsed_line["method"]] += 1
                 parsed_count += 1
             if parsed_count == 10:
-                print("File size {}".format(file_size))
-                for status, count in methods_stats.items():
-                    if count > 0:
-                        print("{}: {}".format(status, count))
+                print_stats(file_size, methods_stats)
 
                 methods_stats = init_methods_stats()
                 file_size = 0
