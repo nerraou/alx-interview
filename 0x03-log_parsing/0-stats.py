@@ -75,8 +75,6 @@ if __name__ == "__main__":
             if parsed_count == 10:
                 print_stats(file_size, methods_stats)
 
-                methods_stats = init_methods_stats()
-                file_size = 0
                 parsed_count = 0
         if parsed_count > 0:
             print_stats(file_size, methods_stats)
