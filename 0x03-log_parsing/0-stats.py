@@ -40,7 +40,7 @@ def parse_line(line):
 
 def print_stats(file_size, methods_stats):
     """ print stats details """
-    print("File size {}".format(file_size))
+    print("File size: {}".format(file_size))
     for status, count in methods_stats.items():
         if count > 0:
             print("{}: {}".format(status, count))
@@ -68,6 +68,7 @@ if __name__ == "__main__":
     try:
         for line in fileinput.input():
             parsed_line = parse_line(line)
+
             if parsed_line is not None:
                 file_size += parsed_line["file_size"]
                 methods_stats[parsed_line["method"]] += 1
