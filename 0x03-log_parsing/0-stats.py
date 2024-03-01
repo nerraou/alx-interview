@@ -4,49 +4,38 @@ import re
 import sys
 
 
-def is_valid_ip(ip):
-    """ check ip address validity """
-    bytes = ip.split(".")
-    for byte in bytes:
-        if int(byte) > 255:
-            return False
-    return True
-
-
 def parse_line(line):
     """ parse line """
-    regex = r"^((?:\d{1,3}\.){3}\d{1,3}) - \[(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d+)\] \"GET \/projects\/260 HTTP\/1\.1\" (\d{3}) (\d+)$"  # nopep8
+    regex = r"^(.+) ?- ?\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d+)\] \"GET \/projects\/260 HTTP\/1\.1\" (\w+) (\d+)$"  # nopep8
     result = re.search(regex, line)
 
     if result is None:
         return None
 
     ip = result.group(1)
-    method = result.group(3)
+    status = result.group(3)
     file_size = int(result.group(4))
 
-    if not is_valid_ip(ip):
-        return None
-    methods = ["200", "301", "400", "401", "403", "404", "405", "500"]
-    if method not in methods:
-        return None
+    statuses = ["200", "301", "400", "401", "403", "404", "405", "500"]
+    if status not in statuses:
+        status = None
 
     return {
         "ip": ip,
-        "method": method,
+        "status": status,
         "file_size": file_size
     }
 
 
-def print_stats(file_size, methods_stats):
+def print_stats(file_size, status_stats):
     """ print stats details """
     print("File size: {}".format(file_size))
-    for status, count in sorted(methods_stats.items()):
+    for status, count in sorted(status_stats.items()):
         if count > 0:
             print("{}: {}".format(status, count))
 
 
-def init_methods_stats():
+def init_status_stats():
     """ initialize methods stats dict """
     return {
         "200": 0,
@@ -62,7 +51,7 @@ def init_methods_stats():
 
 if __name__ == "__main__":
     file_size = 0
-    methods_stats = init_methods_stats()
+    status_stats = init_status_stats()
     parsed_count = 0
 
     try:
@@ -71,11 +60,13 @@ if __name__ == "__main__":
 
             if parsed_line is not None:
                 file_size += parsed_line["file_size"]
-                methods_stats[parsed_line["method"]] += 1
+                status = parsed_line["status"]
+                if status is not None:
+                    status_stats[status] += 1
                 parsed_count += 1
 
             if parsed_count == 10:
-                print_stats(file_size, methods_stats)
+                print_stats(file_size, status_stats)
                 parsed_count = 0
     finally:
-        print_stats(file_size, methods_stats)
+        print_stats(file_size, status_stats)
